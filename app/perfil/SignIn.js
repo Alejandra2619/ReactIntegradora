@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
+import { View, TextInput, TouchableOpacity, Text, StyleSheet, SafeAreaView } from 'react-native';
 import Toast from 'react-native-easy-toast';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Signin() {
   const toastRef = useRef();
@@ -9,13 +10,11 @@ export default function Signin() {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
       </View>
-      <ScrollView style={styles.scrollView}>
-        <View style={styles.body}>
-        <Text style={styles.headerText}>Crear nuevo usuario</Text>
-          <FormRegistro toastRef={toastRef} />
-          <Toast ref={toastRef} position="center" opacity={0.9} />
-        </View>
-      </ScrollView>
+      <View style={styles.body}>
+        <Text style={styles.headerText}>Crea tu cuenta</Text>
+        <FormRegistro toastRef={toastRef} />
+        <Toast ref={toastRef} position="center" opacity={0.9} />
+      </View>
       <View style={styles.footer}>
       </View>
     </SafeAreaView>
@@ -27,17 +26,17 @@ function FormRegistro({ toastRef }) {
   const [email, setEmail] = useState('');
   const [contraseña, setContraseña] = useState('');
   const [confirmarContraseña, setConfirmarContraseña] = useState('');
-  
+  const navigation = useNavigation();
 
   const registrar = () => {
     if (!nombre || !email || !contraseña || !confirmarContraseña) {
       toastRef.current.show('Por favor, llene todos los campos', 2000);
-      return; 
+      return;
     }
 
     if (contraseña.length < 6) {
       toastRef.current.show('La contraseña debe tener al menos 6 caracteres', 2000);
-      return; 
+      return;
     }
 
     if (contraseña !== confirmarContraseña) {
@@ -47,6 +46,7 @@ function FormRegistro({ toastRef }) {
 
     console.log({ nombre, email, contraseña, confirmarContraseña });
     toastRef.current.show('Usuario registrado con éxito', 2000);
+    navigation.navigate('Login');
   };
 
   return (
@@ -57,7 +57,6 @@ function FormRegistro({ toastRef }) {
         value={nombre}
         onChangeText={setNombre}
       />
-      <View style={styles.separator} />
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -65,7 +64,6 @@ function FormRegistro({ toastRef }) {
         value={email}
         onChangeText={setEmail}
       />
-      <View style={styles.separator} />
       <TextInput
         style={styles.input}
         placeholder="Contraseña"
@@ -73,7 +71,6 @@ function FormRegistro({ toastRef }) {
         value={contraseña}
         onChangeText={setContraseña}
       />
-      <View style={styles.separator} />
       <TextInput
         style={styles.input}
         placeholder="Confirmar Contraseña"
@@ -88,13 +85,13 @@ function FormRegistro({ toastRef }) {
   );
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'space-between',
   },
   header: {
-    height: 60, 
+    height: 60,
     backgroundColor: '#90A407',
     justifyContent: 'center',
     alignItems: 'center',
@@ -103,19 +100,17 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: 'black',
-    textAlign:'center',
-    marginBottom: 75,
-  },
-  scrollView: {
-    flex: 1,
+    textAlign: 'center',
+    marginTop: 20,
+    marginBottom: 20,
   },
   body: {
-    marginTop: 100,
     flex: 1,
     paddingHorizontal: 30,
   },
   form: {
     justifyContent: 'center',
+    marginTop: -10, // Ajusta este valor según tu preferencia para reducir el espacio entre el título y los campos
   },
   input: {
     height: 50,
@@ -123,28 +118,27 @@ const styles = StyleSheet.create({
     padding: 10,
     borderColor: 'gray',
     borderRadius: 5,
-  },
-  separator: {
-    height: 75,
+    marginBottom: 20, // Ajusta este valor según tu preferencia para reducir el espacio entre los campos
   },
   button: {
     backgroundColor: 'black',
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',
-    marginTop: 75,
+    marginTop: 20, // Ajusta este valor según tu preferencia para reducir el espacio entre los campos y el botón
   },
   buttonText: {
     color: 'white',
     fontSize: 16,
   },
   footer: {
-    height: 60, 
+    height: 60,
     backgroundColor: '#90A407',
     justifyContent: 'center',
     alignItems: 'center',
   },
 });
+
 
 
 
