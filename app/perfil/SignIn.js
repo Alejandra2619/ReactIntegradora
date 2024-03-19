@@ -1,7 +1,9 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet, SafeAreaView } from 'react-native';
 import Toast from 'react-native-easy-toast';
 import { useNavigation } from '@react-navigation/native';
+import { firebaseApp } from '../utils/firebase';
+import 'firebase/compat/auth';
 
 export default function Signin() {
   const toastRef = useRef();
@@ -27,26 +29,33 @@ function FormRegistro({ toastRef }) {
   const [contraseña, setContraseña] = useState('');
   const [confirmarContraseña, setConfirmarContraseña] = useState('');
   const navigation = useNavigation();
+  const auth = firebaseApp.auth();
 
-  const registrar = () => {
-    if (!nombre || !email || !contraseña || !confirmarContraseña) {
-      toastRef.current.show('Por favor, llene todos los campos', 2000);
-      return;
+  const registrar = async () => {
+    try {
+      if (!nombre || !email || !contraseña || !confirmarContraseña) {
+        toastRef.current.show('Por favor, llene todos los campos', 2000);
+        return;
+      }
+
+      if (contraseña.length < 6) {
+        toastRef.current.show('La contraseña debe tener al menos 6 caracteres', 2000);
+        return;
+      }
+
+      if (contraseña !== confirmarContraseña) {
+        toastRef.current.show('Las contraseñas no coinciden', 2000);
+        return; // Evitar enviar el formulario si las contraseñas no coinciden
+      }
+
+      await auth.createUserWithEmailAndPassword(email, contraseña);
+      console.log('Usuario registrado con éxito');
+      toastRef.current.show('Usuario registrado con éxito', 2000);
+      navigation.navigate('Login');
+    } catch (error) {
+      console.error('Error al registrar usuario:', error);
+      toastRef.current.show('Error al registrar usuario', 2000);
     }
-
-    if (contraseña.length < 6) {
-      toastRef.current.show('La contraseña debe tener al menos 6 caracteres', 2000);
-      return;
-    }
-
-    if (contraseña !== confirmarContraseña) {
-      toastRef.current.show('Las contraseñas no coinciden', 2000);
-      return; // Evitar enviar el formulario si las contraseñas no coinciden
-    }
-
-    console.log({ nombre, email, contraseña, confirmarContraseña });
-    toastRef.current.show('Usuario registrado con éxito', 2000);
-    navigation.navigate('Login');
   };
 
   return (
