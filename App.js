@@ -1,7 +1,6 @@
 
 import Welcome from './app/perfil/Welcome';
 import Login from './app/perfil/Login';
-import SignIn from './app/perfil/SignIn';
 import RegistroPlantas from './app/perfil/RegistroPlantas';
 import * as React from 'react';
 import { View, Text } from 'react-native';
@@ -16,7 +15,6 @@ function App() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Welcome" component={Welcome} />
         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="SignIn" component={SignIn} />
         <Stack.Screen name="RegistroPlantas" component={RegistroPlantas} />
       </Stack.Navigator>
     </NavigationContainer>
