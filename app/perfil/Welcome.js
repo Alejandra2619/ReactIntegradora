@@ -25,9 +25,6 @@ export default function Principal() {
         <TouchableOpacity style={[styles.button, { backgroundColor: '#736934' }]} onPress={() => navegacion.navigate('Login')}>
           <Text style={styles.buttonText}>Ingresar</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navegacion.navigate('SignIn')}>
-          <Text style={styles.buttonText}>Registrarse</Text>
-        </TouchableOpacity>
       </View>
 
       <View style={styles.footer}>
